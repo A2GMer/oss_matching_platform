@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}Repository List{% endblock %}
+
+{% block content %}
+<h2>Open Source Repositories</h2>
+<ul>
+    {% for repo in repos %}
+        <li>
+            <strong><a href="{{ repo.url }}" target="_blank">{{ repo.name }}</a></strong><br>
+            <p>{{ repo.description }}</p>
+        </li>
+    {% endfor %}
+</ul>
+{% endblock %}

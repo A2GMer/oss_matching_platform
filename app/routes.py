@@ -57,14 +57,18 @@ def mypage():
 # トップページでリポジトリ一覧を表示
 @app.route('/')
 def index():
+    # 全リポジトリを取得（共通処理）
+    repos = Repository.query.all()  # 全リポジトリ情報を取得
+
     if 'user_id' not in session:
-        repos = Repository.query.all()  # 全リポジトリ情報を取得
-        return render_template('index.html', repos=repos)
+        recommended_repos = []  # 非ログイン時はレコメンドを空に
+        return render_template('index.html', recommended_repos=recommended_repos, repos=repos)
 
     user_id = session['user_id']
     # 最も経験年数が長い言語とフレームワークを取得
     top_language = db.session.query(Language).filter_by(user_id=user_id).order_by(Language.experience_years.desc()).first()
     top_framework = db.session.query(Framework).filter_by(user_id=user_id).order_by(Framework.experience_years.desc()).first()
+
     # 比較して最長のものを選択
     if top_language and (not top_framework or top_language.experience_years >= top_framework.experience_years):
         top_skill = top_language.language_name
@@ -82,7 +86,9 @@ def index():
                 Repository.frameworks.ilike(f"%{top_skill}%")
             )
         ).all()
-    return render_template('index.html', repos=recommended_repos)
+
+    return render_template('index.html', recommended_repos=recommended_repos, repos=repos)
+
 
 
 @app.route('/dashboard')

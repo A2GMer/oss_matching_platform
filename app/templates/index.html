@@ -4,6 +4,26 @@
 
 {% block content %}
 <h2>GitHub Repositories</h2>
+
+<!-- レコメンドリスト -->
+{% if recommended_repos %}
+<h3>Recommended Repositories</h3>
+<ul>
+    {% for repo in recommended_repos %}
+        <li>
+            <strong><a href="{{ repo.url }}" target="_blank">{{ repo.name }}</a></strong><br>
+            <p>{{ repo.description }}</p>
+            <p>⭐ {{ repo.stars }} | 🍴 {{ repo.forks }}</p>
+            <p>Languages: {{ repo.languages }}</p>
+        </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>No recommendations available. Here are other repositories:</p>
+{% endif %}
+
+<!-- 全てのリポジトリリスト -->
+<h3>All Repositories</h3>
 <ul>
     {% for repo in repos %}
         <li>
@@ -14,4 +34,5 @@
         </li>
     {% endfor %}
 </ul>
+
 {% endblock %}

@@ -42,7 +42,6 @@ def mypage():
 # トップページでリポジトリ一覧を表示
 @app.route('/')
 def index():
-    # fetch_repos()  # データベース更新
     repos = Repository.query.all()  # 全リポジトリ情報を取得
     return render_template('index.html', repos=repos)
 

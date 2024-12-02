@@ -1,0 +1,35 @@
+
+{% extends 'base.html' %}
+{% block content %}
+<h1 class="my-4">Search Projects</h1>
+<form class="mb-4" action="/search" method="GET">
+    <div class="row g-3">
+        <div class="col-md-4">
+            <input type="text" name="keyword" class="form-control" placeholder="Keyword">
+        </div>
+        <div class="col-md-4">
+            <input type="text" name="language" class="form-control" placeholder="Language">
+        </div>
+        <div class="col-md-4">
+            <input type="number" name="min_stars" class="form-control" placeholder="Min Stars">
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary mt-3">Search</button>
+</form>
+
+<div class="row">
+    {% for project in projects %}
+    <div class="col-md-4">
+        <div class="card project-card">
+            <div class="card-header">{{ project.name }}</div>
+            <div class="card-body">
+                <p>{{ project.description }}</p>
+                <p><strong>Language:</strong> {{ project.language }}</p>
+                <p><strong>Stars:</strong> {{ project.stars }}</p>
+                <a href="/project/{{ project.id }}" class="btn btn-primary">View Project</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

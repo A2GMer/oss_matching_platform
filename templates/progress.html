@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Your Contributions</h1>
+<ul>
+{% for contribution in contributions %}
+    <li>{{ contribution.project.name }}: {{ contribution.task_description }} on {{ contribution.timestamp }}</li>
+{% endfor %}
+</ul>
+{% endblock %}

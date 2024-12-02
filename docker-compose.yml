@@ -9,7 +9,7 @@ services:
     volumes:
       - .:/app
     environment:
-      - FLASK_APP=app.py
+      - FLASK_APP=app
       - FLASK_ENV=development
       - DB_HOST=db
       - DB_PORT=3306

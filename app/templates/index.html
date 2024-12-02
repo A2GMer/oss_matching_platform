@@ -10,6 +10,7 @@
             <strong><a href="{{ repo.url }}" target="_blank">{{ repo.name }}</a></strong><br>
             <p>{{ repo.description }}</p>
             <p>⭐ {{ repo.stars }} | 🍴 {{ repo.forks }}</p>
+            <p>Languages: {{ repo.languages }}</p>
         </li>
     {% endfor %}
 </ul>

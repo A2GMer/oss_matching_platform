@@ -3,6 +3,49 @@
 {% block content %}
 <h1>Welcome to your My Page, {{ username }}!</h1>
 
+<h2>Register Your Programming Experience</h2>
+
+<h3>Add Programming Language</h3>
+<form method="POST" action="/add_language">
+    <input type="text" name="language_name" placeholder="Language (e.g., Python)" required>
+    <input type="number" name="experience_years" placeholder="Years of Experience" required>
+    <button type="submit">Add</button>
+</form>
+
+<h3>Your Registered Languages</h3>
+<ul>
+    {% for language in languages %}
+    <li>
+        {{ language.language_name }}: {{ language.experience_years }} years
+        <form method="POST" action="/delete_language">
+            <input type="hidden" name="language_id" value="{{ language.id }}">
+            <button type="submit">Delete</button>
+        </form>
+    </li>
+    {% endfor %}
+</ul>
+
+<h3>Add Framework</h3>
+<form method="POST" action="/add_framework">
+    <input type="text" name="framework_name" placeholder="Framework (e.g., Django)" required>
+    <input type="number" name="experience_years" placeholder="Years of Experience" required>
+    <button type="submit">Add</button>
+</form>
+
+<h3>Your Registered Frameworks</h3>
+<ul>
+    {% for framework in frameworks %}
+    <li>
+        {{ framework.framework_name }}: {{ framework.experience_years }} years
+        <form method="POST" action="/delete_framework">
+            <input type="hidden" name="framework_id" value="{{ framework.id }}">
+            <button type="submit">Delete</button>
+        </form>
+    </li>
+    {% endfor %}
+</ul>
+
+
 <h2>Your Repositories:</h2>
 <ul>
     {% for repo in repos %}

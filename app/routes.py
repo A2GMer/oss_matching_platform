@@ -4,33 +4,39 @@ from app import app, db
 from app.models import Repository
 from app.models import User
 from authlib.integrations.flask_client import OAuth
+from app.decorators import login_required
 
 
-# GitHub APIからリポジトリ情報を取得し保存
-@app.route('/fetch')
-def fetch_repos():
-    username = "A2GMer"  # GitHubユーザー名
-    # headers = {"Authorization": "token your_github_personal_access_token"}  # 認証トークンを使用（オプション）
-    # response = requests.get(f'https://api.github.com/users/{username}/repos', headers=headers)
-    response = requests.get(f'https://api.github.com/users/{username}/repos')
 
-    if response.status_code == 200:  # 正常にデータを取得できた場合
-        repos = response.json()
-        for repo in repos:
-            if not repo.get('private', False):  # 非公開リポジトリを除外
-                if not Repository.query.filter_by(name=repo['name']).first():
-                    new_repo = Repository(
-                        name=repo['name'],
-                        description=repo.get('description'),
-                        url=repo['html_url'],
-                        stars=repo.get('stargazers_count', 0),
-                        forks=repo.get('forks_count', 0)
-                    )
-                    db.session.add(new_repo)
-        db.session.commit()
-        return redirect(url_for('index'))  # トップページにリダイレクト
-    else:
+@app.route('/mypage')
+@login_required
+def mypage():
+    # GitHub APIを使用してログイン中のユーザーのリポジトリを取得
+    token = session.get('github_token')
+    if not token:
+        return redirect(url_for('login'))
+
+    github_user = session.get('username')  # ユーザー名を取得
+    headers = {"Authorization": f"token {token}"}
+    response = requests.get(f'https://api.github.com/users/{github_user}/repos', headers=headers)
+    if response.status_code != 200:
         return f"Failed to fetch repositories: {response.status_code}"
+    
+    repos = response.json()  # リポジトリ情報をJSONで取得
+
+    for repo in repos:
+        if not repo.get('private', False):  # 非公開リポジトリを除外
+            if not Repository.query.filter_by(name=repo['name']).first():
+                new_repo = Repository(
+                    name=repo['name'],
+                    description=repo.get('description'),
+                    url=repo['html_url'],
+                    stars=repo.get('stargazers_count', 0),
+                    forks=repo.get('forks_count', 0)
+                )
+                db.session.add(new_repo)
+    db.session.commit()
+    return render_template('mypage.html', repos=repos, username=github_user)
 
 
 # トップページでリポジトリ一覧を表示
@@ -84,6 +90,7 @@ def authorize():
 
     session['user_id'] = user.id
     session['username'] = username
+    session['github_token'] = token['access_token']
     return redirect(url_for('index'))
 
 

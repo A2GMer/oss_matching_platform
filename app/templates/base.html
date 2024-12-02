@@ -13,6 +13,7 @@
     </style>
     {% if session.get('user_id') %}
     <p>Welcome, {{ session.get('username') }}</p>
+    <a href="/mypage">My Page</a>
     <a href="/logout">Logout</a>
     {% else %}
     <a href="/login">Login with GitHub</a>

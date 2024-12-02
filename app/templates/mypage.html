@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Welcome to your My Page, {{ username }}!</h1>
+
+<h2>Your Repositories:</h2>
+<ul>
+    {% for repo in repos %}
+        <li>
+            <a href="{{ repo.html_url }}" target="_blank">{{ repo.name }}</a>
+            <p>{{ repo.description or "No description provided." }}</p>
+        </li>
+    {% endfor %}
+</ul>
+<a href="/">Back to Home</a>
+{% endblock %}

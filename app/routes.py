@@ -1,7 +1,10 @@
 import requests
-from flask import render_template, redirect, url_for
+from flask import redirect, url_for, session, request, render_template
 from app import app, db
 from app.models import Repository
+from app.models import User
+from authlib.integrations.flask_client import OAuth
+
 
 # GitHub APIからリポジトリ情報を取得し保存
 @app.route('/fetch')
@@ -40,3 +43,52 @@ def index():
 @app.route('/dashboard')
 def dashboard():
     return render_template('dashboard.html')  # templates/dashboard.htmlを返す
+
+
+# OAuth設定
+oauth = OAuth(app)
+github = oauth.register(
+    name='github',
+    client_id=app.config['GITHUB_CLIENT_ID'],
+    client_secret=app.config['GITHUB_CLIENT_SECRET'],
+    access_token_url='https://github.com/login/oauth/access_token',
+    authorize_url='https://github.com/login/oauth/authorize',
+    api_base_url='https://api.github.com/',
+    client_kwargs={'scope': 'user:email'},
+)
+
+
+# ログインルート
+@app.route('/login')
+def login():
+    return github.authorize_redirect(url_for('authorize', _external=True))
+
+
+# コールバックルート
+@app.route('/callback')
+def authorize():
+    token = github.authorize_access_token()
+    resp = github.get('user')
+    profile = resp.json()
+
+    # GitHubユーザーをデータベースに保存
+    github_id = profile['id']
+    username = profile['login']
+    email = profile.get('email')
+
+    user = User.query.filter_by(github_id=github_id).first()
+    if not user:
+        user = User(username=username, github_id=github_id, email=email)
+        db.session.add(user)
+        db.session.commit()
+
+    session['user_id'] = user.id
+    session['username'] = username
+    return redirect(url_for('index'))
+
+
+# ログアウト
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('index'))

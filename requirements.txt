@@ -4,3 +4,5 @@ requests
 
 pymysql
 Flask-Migrate
+authlib
+python-dotenv

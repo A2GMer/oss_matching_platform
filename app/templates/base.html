@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OSS Matching Platform</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}" type="image/x-icon">
+
     <style>
         .project-card { margin-bottom: 20px; }
         .card-header { font-weight: bold; }
@@ -20,6 +22,9 @@
     {% endif %}
 </head>
 <body>
+    <header>
+        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" style="width:100px;height:auto;">
+    </header>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container-fluid">
             <a class="navbar-brand" href="/">OSS Matching</a>

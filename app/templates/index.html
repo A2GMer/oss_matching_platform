@@ -1,15 +1,17 @@
 {% extends 'base.html' %}
 
-{% block title %}Repository List{% endblock %}
+{% block title %}GitHub Repositories{% endblock %}
 
 {% block content %}
-<h2>Open Source Repositories</h2>
+<h2>GitHub Repositories</h2>
 <ul>
     {% for repo in repos %}
         <li>
             <strong><a href="{{ repo.url }}" target="_blank">{{ repo.name }}</a></strong><br>
             <p>{{ repo.description }}</p>
+            <p>⭐ {{ repo.stars }} | 🍴 {{ repo.forks }}</p>
         </li>
     {% endfor %}
 </ul>
+<a href="/fetch">Fetch Repositories</a> <!-- 新しいリポジトリ情報を取得するリンク -->
 {% endblock %}

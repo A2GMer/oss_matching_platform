@@ -5,3 +5,5 @@ class Repository(db.Model):
     name = db.Column(db.String(100), nullable=False)  # リポジトリ名
     description = db.Column(db.Text, nullable=True)   # 説明
     url = db.Column(db.String(255), nullable=False)   # URL
+    stars = db.Column(db.Integer, nullable=True)      # スター数
+    forks = db.Column(db.Integer, nullable=True)      # フォーク数

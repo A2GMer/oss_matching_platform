@@ -3,36 +3,41 @@
 {% block title %}GitHub Repositories{% endblock %}
 
 {% block content %}
-<h2>GitHub Repositories</h2>
+<div class="container">
+    <h2>GitHub Repositories</h2>
 
-<!-- レコメンドリスト -->
-{% if recommended_repos %}
-<h3>Recommended Repositories</h3>
-<ul>
-    {% for repo in recommended_repos %}
-        <li>
-            <strong><a href="{{ repo.url }}" target="_blank">{{ repo.name }}</a></strong><br>
-            <p>{{ repo.description }}</p>
-            <p>⭐ {{ repo.stars }} | 🍴 {{ repo.forks }}</p>
-            <p>Languages: {{ repo.languages }}</p>
-        </li>
-    {% endfor %}
-</ul>
-{% else %}
-<p>No recommendations available. Here are other repositories:</p>
-{% endif %}
+    <!-- レコメンドリスト -->
+    {% if recommended_repos %}
+    <h3>Recommended Repositories</h3>
+    <div class="row">
+        {% for repo in recommended_repos %}
+        <div class="col-md-4">
+            <div class="card">
+                <h4><a href="{{ repo.url }}" target="_blank">{{ repo.name }}</a></h4>
+                <p>{{ repo.description }}</p>
+                <p>⭐ {{ repo.stars }} | 🍴 {{ repo.forks }}</p>
+                <p>Languages: {{ repo.languages }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p>No recommendations available. Here are other repositories:</p>
+    {% endif %}
 
-<!-- 全てのリポジトリリスト -->
-<h3>All Repositories</h3>
-<ul>
-    {% for repo in repos %}
-        <li>
-            <strong><a href="{{ repo.url }}" target="_blank">{{ repo.name }}</a></strong><br>
-            <p>{{ repo.description }}</p>
-            <p>⭐ {{ repo.stars }} | 🍴 {{ repo.forks }}</p>
-            <p>Languages: {{ repo.languages }}</p>
-        </li>
-    {% endfor %}
-</ul>
-
+    <!-- 全てのリポジトリリスト -->
+    <h3>All Repositories</h3>
+    <div class="row">
+        {% for repo in repos %}
+        <div class="col-md-4">
+            <div class="card">
+                <h4><a href="{{ repo.url }}" target="_blank">{{ repo.name }}</a></h4>
+                <p>{{ repo.description }}</p>
+                <p>⭐ {{ repo.stars }} | 🍴 {{ repo.forks }}</p>
+                <p>Languages: {{ repo.languages }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
 {% endblock %}

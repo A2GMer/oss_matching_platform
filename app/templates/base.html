@@ -1,40 +1,89 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OSS Matching Platform</title>
+    <title>{% block title %}OSS Matching Platform{% endblock %}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}" type="image/x-icon">
 
     <style>
+        .navbar { margin-bottom: 20px; }
         .project-card { margin-bottom: 20px; }
         .card-header { font-weight: bold; }
-        .navbar { margin-bottom: 20px; }
+        .welcome { margin-right: 15px; }
+        footer { background-color: #f8f9fa; color: #6c757d; }
+        .card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
     </style>
-    {% if session.get('user_id') %}
-    <p>Welcome, {{ session.get('username') }}</p>
-    <a href="/mypage">My Page</a>
-    <a href="/logout">Logout</a>
-    {% else %}
-    <a href="/login">Login with GitHub</a>
-    {% endif %}
 </head>
 <body>
-    <header>
-        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" style="width:100px;height:auto;">
+    <!-- Header -->
+    <header class="bg-primary text-white py-3">
+        <div class="container d-flex justify-content-between align-items-center">
+            <div>
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" style="width: 100px; height: auto;">
+            </div>
+            <nav>
+                {% if session.get('user_id') %}
+                    <span class="welcome">Welcome, {{ session.get('username') }}</span>
+                    <a href="/mypage" class="btn btn-outline-light btn-sm">My Page</a>
+                    <a href="/logout" class="btn btn-outline-light btn-sm">Logout</a>
+                {% else %}
+                    <a href="/login" class="btn btn-outline-light btn-sm">Login with GitHub</a>
+                {% endif %}
+            </nav>
+        </div>
     </header>
+
+    <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container-fluid">
             <a class="navbar-brand" href="/">OSS Matching</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/mypage">My Page</a></li>
+                </ul>
+            </div>
         </div>
     </nav>
+
+    <!-- Main Content -->
     <div class="container">
         {% block content %}{% endblock %}
     </div>
-    <footer class="bg-light text-center py-3 mt-5">
-        <p>&copy; OSS Matching Platform</p>
+
+    <!-- Footer -->
+    <footer class="text-center py-3 mt-5">
+        <p>&copy; 2024 OSS Matching Platform. All rights reserved.</p>
     </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Example JavaScript: Add hover effect or animation here
+        document.addEventListener("DOMContentLoaded", function() {
+            const cards = document.querySelectorAll(".card");
+            cards.forEach(card => {
+                card.style.opacity = 0;
+                setTimeout(() => {
+                    card.style.opacity = 1;
+                    card.style.transform = "translateY(0)";
+                }, Math.random() * 500);
+            });
+        });
+    </script>
 </body>
 </html>
